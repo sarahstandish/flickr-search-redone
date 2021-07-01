@@ -1,38 +1,186 @@
-.App {
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  --background-color: #edf6f9;
+   /* Purple: #20063B;  */
+  --text-color: #2e582e;
+   /* #97949E; */
+  --accent-color-1: #26547C;
+  /* #074F57; */
+  --title-font: 'Syne', sans-serif;
+  --body-font: 'Montserrat', sans-serif;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+h1 {
+  font-family: var(--title-font);
+  color: var(--background-color);
+}
+
+h2 {
+  font-family: var(--title-font);
   text-align: center;
+  margin: 0 auto;
+  padding: 10px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+p {
+  font-family: var(--body-font);
+  font-style: italic;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.about {
+  text-align: justify;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.about a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.about a:hover {
+  text-decoration: none;
+  color: var(--accent-color-1);
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  padding-top: 40px;
 }
 
-.App-link {
-  color: #61dafb;
+a {
+  text-decoration: none;
+  color: var(--background-color);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+a:hover {
+  color: var(--accent-color-1);
 }
+
+img {
+  margin: 0 auto;
+  padding: 10px;
+  height: 250px;
+  object-fit: cover;
+}
+
+.photos {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  font-family: var(--body-font);
+}
+
+form {
+  max-width: 600px;
+  margin: 20px auto;
+}
+fieldset {
+  padding: 10px;
+  border: 3px solid var(--accent-color-1);
+}
+label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-family: var(--title-font);
+  font-weight: bold;
+  font-size: 1.2em;
+  color: var(--accent-color-1);
+}
+
+input[type=text], input[type=email], input[type=number] {
+  width: 50%;
+  margin-bottom: 10px;
+  padding: 3px;
+  border-radius: 5px;
+}
+
+
+button {
+  display: block;
+  padding: 5px;
+  margin-top: 5px;
+  color: var(--background-color);
+  background-color: var(--accent-color-1);
+}
+
+
+img:hover {
+  opacity: .5;
+}
+
+textarea {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+
+.box {
+  width: 400px;
+  margin: 20px auto;
+  padding: 10px;
+}
+
+.error {
+  display: block;
+  color: var(--accent-color-1);
+  font-family: var(--body-font);
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: var(--body-font);
+  color: var(--text-color);
+  font-size: 1em;
+}
+
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: white;
+  border: 1px solid var(--accent-color-1);
+  border-radius: 3px; 
+}
+
+.container:hover input ~ .checkmark {
+  background-color: gray;
+}
+
+.container input:checked ~ .checkmark {
+  background-color: var(--accent-color-1);
+}
+
+
