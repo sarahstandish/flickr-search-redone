@@ -23,6 +23,7 @@ function Form() {
         },
         dpi: "",
         location: "",
+        submitted: 0
     })
 
     // const [ photosArray, setPhotosArray ] = useState([])
@@ -57,6 +58,12 @@ function Form() {
 
     function handleSubmit(event) {
         event.preventDefault();
+        setInput(prevState => {
+            return {
+                ...input,
+                submitted: prevState.submitted + 1
+            }
+        } )
         setSubmit(true)
     }
 

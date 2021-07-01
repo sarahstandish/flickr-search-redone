@@ -1,10 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {googleApiKey, flickrApiKey} from './keys'
 import Photo from './Photo'
 import React, { useEffect, useState } from 'react'
 
 function GetImages( { props }) {
-
-    console.log("Props: ", props)
 
     const [ photosArray, setPhotosArray ] = useState([]);
 
@@ -18,7 +17,9 @@ function GetImages( { props }) {
 
     useEffect(() => {
 
-         const fetchPhotos = async () => {
+        console.log("Props: ", props)
+
+        const fetchPhotos = async () => {
 
             let [ latitude , longitude ] = await getLatAndLang(props.location); // get latitude and longitude, returned as array 
 
@@ -83,7 +84,7 @@ function GetImages( { props }) {
 
          fetchPhotos()
 
-    }, [props])
+    }, [props.submitted])
 
    
     return(
@@ -104,7 +105,7 @@ async function createUrl(props, latitude, longitude) {
 
     let licenses = licensesToString(props.licenses);
 
-    return `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${flickrApiKey}&text=${props.search_term}&content_type=1&per_page=500&format=json&nojsoncallback=1&sort=relevance&radius=32&lat=${latitude}&lon=${longitude}&license=${licenses}`
+    return `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${flickrApiKey}&text=${props.search_term}&content_type=1&per_page=250&format=json&nojsoncallback=1&sort=relevance&radius=32&lat=${latitude}&lon=${longitude}&license=${licenses}`
 }
 
 function licensesToString(licenseObject) {
