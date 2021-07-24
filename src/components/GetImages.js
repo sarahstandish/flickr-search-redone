@@ -2,6 +2,7 @@
 import {googleApiKey, flickrApiKey} from './keys'
 import Photo from './Photo'
 import React, { useEffect, useState } from 'react'
+import api from '../api'
 
 function GetImages( { props }) {
 
@@ -13,7 +14,6 @@ function GetImages( { props }) {
     })
 
     const [ apiCalls, setApiCalls ] = useState(0);
-
 
     useEffect(() => {
 
@@ -61,7 +61,16 @@ function GetImages( { props }) {
                 } else {
                     return data.photos.photo
                 }
+
+
             })
+            .then(api.newCall({ "calls" : apiCalls })
+                .then(res => {
+                    window.alert(`${apiCalls} calls inserted successfully`)
+                })
+                .catch(err => {
+                    window.alert(err)
+                }))
 
             if (photosArray.length === 0) {
                 setErrorMessages(prevMessages => {
@@ -77,16 +86,15 @@ function GetImages( { props }) {
                         searchError: ""
                     }
                 })
-             }
+            }
 
             setPhotosArray(photosArray.map(photo => <Photo props={photo} /> ))
-         }
+        }
 
-         fetchPhotos()
+        fetchPhotos()
 
     }, [props.submitted])
 
-   
     return(
         <div>
             <div className="error">
