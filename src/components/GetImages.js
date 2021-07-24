@@ -58,19 +58,11 @@ function GetImages( { props }) {
                         .then(result => result.filter(element => element)) // filter out undefined elements in return array
                         .catch(error => console.log("Error is: ", error))
 
-                } else {
-                    return data.photos.photo
-                }
-
-
+                    } else {
+                        return data.photos.photo
+                    }
             })
-            .then(api.newCall({ "calls" : apiCalls })
-                .then(res => {
-                    window.alert(`${apiCalls} calls inserted successfully`)
-                })
-                .catch(err => {
-                    window.alert(err)
-                }))
+
 
             if (photosArray.length === 0) {
                 setErrorMessages(prevMessages => {
@@ -95,9 +87,25 @@ function GetImages( { props }) {
 
     }, [props.submitted])
 
+    // write the apiCalls to the database
+    useEffect(() => { 
+
+        // only run if calls are greater than or 1% of limit
+        if (apiCalls > 36) {
+            api.newCall({ "calls" : apiCalls })
+            .then(window.alert(`${apiCalls} calls inserted successfully`))
+            .then(setApiCalls(0)) // reset apiCalls to zero
+            .catch(err => {
+                console.log(err)            
+                })
+        } 
+
+    }, [apiCalls])
+
     return(
         <div>
             <div className="error">
+                <p>API calls this session: {apiCalls}</p>
                 <p>Your API Calls this session are at {(apiCalls / 3600 * 100).toFixed(0)}% of the hourly limit.</p>
                 <p>{errorMessages.locationError}</p>
                 <p>{errorMessages.searchError}</p>
