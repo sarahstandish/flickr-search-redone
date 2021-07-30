@@ -13,7 +13,9 @@ function GetImages( { props }) {
         locationError: "",
     })
 
-    const [ apiCalls, setApiCalls ] = useState(0);
+    const [ apiCallsThisSession, setApiCallsThisSession ] = useState(0);
+    const [ apiCallsThisHour, setApiCallsThisHour ] = useState(0)
+
 
     useEffect(() => {
 
@@ -44,7 +46,8 @@ function GetImages( { props }) {
             let photosArray = await fetch(flickr_url) // make call to flickr
             .then(response => {
                 if (response.ok) {
-                    setApiCalls(prevState => prevState + 1)
+                    setApiCallsThisSession(prevState => prevState + 1)
+                    setApiCallsThisHour(prevState => prevState + 1)
                     return response.json();
                 }
                 // handle bad request
@@ -52,7 +55,8 @@ function GetImages( { props }) {
             .then(data => {
                 if (props.dpi) {
 
-                    setApiCalls(prevState => prevState + data.photos.photo.length)
+                    setApiCallsThisSession(prevState => prevState + data.photos.photo.length)
+                    setApiCallsThisHour(prevState => prevState + data.photos.photo.length)
 
                     return Promise.all(data.photos.photo.map(photo => hasMinDPI(photo, props.dpi)))
                         .then(result => result.filter(element => element)) // filter out undefined elements in return array
@@ -80,7 +84,7 @@ function GetImages( { props }) {
                 })
             }
 
-            setPhotosArray(photosArray.map(photo => <Photo props={photo} /> ))
+            setPhotosArray(photosArray.map(photo => <Photo key={photo.id} props={photo} /> ))
         }
 
         fetchPhotos()
@@ -91,22 +95,50 @@ function GetImages( { props }) {
     useEffect(() => { 
 
         // only run if calls are greater than or 1% of limit
-        if (apiCalls > 36) {
-            api.newCall({ "calls" : apiCalls })
-            .then(window.alert(`${apiCalls} calls inserted successfully`))
-            .then(setApiCalls(0)) // reset apiCalls to zero
+        if (apiCallsThisSession > 36) {
+            api.newCall({ "calls" : apiCallsThisSession })
+            .then(console.log(`${apiCallsThisSession} calls inserted successfully`))
+            .then(setApiCallsThisSession(0)) // reset apiCalls to zero
             .catch(err => {
                 console.log(err)            
                 })
         } 
 
-    }, [apiCalls])
+    }, [apiCallsThisSession])
+
+    // get api calls this hour from database on initial render, use it to set total api calls in state
+    useEffect(() => {
+
+        let callsThisHour = 0
+        let millisecondsLastHour = Date.now() - 3600000 // milliseconds that occurred in the last hour
+
+        api.getCalls()
+            .then(object => {
+
+                let databaseEntries = object.data.data
+
+                // take only the last 100 calls since each entry must be at least 1% of the total capacity
+                databaseEntries.slice(-100).reverse().forEach(element => {
+                    if (element.dateTime >= millisecondsLastHour) {
+                        callsThisHour += element.calls
+                        console.log("Calls so far: ", callsThisHour)
+                    } else {
+                        // set calls this hour and jump out of the loop
+                        // all further entries will be too far in the past to be relevant
+                        setApiCallsThisHour(callsThisHour)
+                        return
+                    }
+                })
+
+            })
+            .catch(err => console.log("Error: ", err))
+    }, [])
 
     return(
         <div>
             <div className="error">
-                <p>API calls this session: {apiCalls}</p>
-                <p>Your API Calls this session are at {(apiCalls / 3600 * 100).toFixed(0)}% of the hourly limit.</p>
+                <p>API calls this hour: {apiCallsThisHour}</p>
+                <p>API Calls this hour are at {(apiCallsThisHour / 3600 * 100).toFixed(0)}% of the hourly limit.</p>
                 <p>{errorMessages.locationError}</p>
                 <p>{errorMessages.searchError}</p>
             </div>
