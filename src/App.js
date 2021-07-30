@@ -1,5 +1,5 @@
 import './style/App.css';
-import Form from './components/Form'
+import Form from './components/Form-Container'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 function App() {

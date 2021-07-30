@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import GetImages from './GetImages'
-// import Photo from './Photo'
+// import Photo from './Photo's
 
 function Form() {
 
     const [submitted, setSubmit ] = useState(false)
-   
+
     const [ input, setInput ] = useState({
         search_term: "",
         licenses: {
@@ -81,7 +81,7 @@ function Form() {
                         required
                     />
 
-                 <label>City</label>
+                <label>City</label>
                     <input 
                         type="text" 
                         name="location" 
@@ -203,7 +203,7 @@ function Form() {
                             />  
                         <span className="checkmark"></span>
                     </label>
-              
+
                 <label className="container">Public Domain Mark  
                     <a href="https://creativecommons.org/publicdomain/mark/1.0/" target="_blank" rel="noreferrer">     Learn more</a>
                     <input 
