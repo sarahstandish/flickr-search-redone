@@ -142,6 +142,7 @@ textarea {
   max-width: 900px;
   margin: 0 auto;
   white-space: pre-wrap;
+  line-height: 1.5;
 }
 
 .container {
