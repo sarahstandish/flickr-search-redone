@@ -8,6 +8,7 @@ import api from '../api'
 
 function FormContainer() {
 
+    // state containing form input
     const [ input, setInput ] = useState({
         search_term: "",
         licenses: {
@@ -24,23 +25,26 @@ function FormContainer() {
             10: true
         },
         dpi: "",
-        location: "",
-        submitted: 0
+        location: ""
     })
 
+    // photos returned by search
     const [ photosArray, setPhotosArray ] = useState([]);
 
+    // error messages
     const [ errorMessages, setErrorMessages ] = useState({
         searchError: "",
         locationError: "",
     })
 
+    // api calls
     const [ apiCalls, setApiCalls ] = useState({
         thisSession: 0,
         thisHour: 0
     })
 
     // get api calls this hour from database on initial render, use it to set total api calls in state
+
     useEffect(() => {
 
         let callsThisHour = 0
@@ -51,10 +55,8 @@ function FormContainer() {
 
                 console.log("Got calls")
 
-                let databaseEntries = object.data.data
-
                 // take only the last 100 calls since each entry must be at least 1% of the total capacity
-                let lastHundred = databaseEntries.slice(-100).reverse()
+                let lastHundred = object.data.data.slice(-100).reverse()
                 
                 for (const element of lastHundred) {
                     if (element.dateTime >= millisecondsLastHour) {
@@ -63,7 +65,6 @@ function FormContainer() {
                     } else {
                         // set calls this hour and jump out of the loop
                         // all further entries will be too far in the past to be relevant
-                        // setthisHour(callsThisHour)
                         setApiCalls(prevState => {
                             return {
                                 ...prevState,
@@ -71,12 +72,12 @@ function FormContainer() {
                             }
                         })
                         console.log("Calls this hour: ", apiCalls.thisHour)
-                        // handleChange(apiCalls.thisHour, callsThisHour)
                         break
                     }
                 }
             })
             .catch(err => console.log("Error: ", err))
+
     }, [])
 
         // write the apiCalls to the database
@@ -123,15 +124,6 @@ function FormContainer() {
         }        
     }
 
-    // function handleApiChange(item, newValue) {
-    //     setApiCalls(prevValues => {
-    //         return {
-    //             ...prevValues,
-    //             item: newValue,
-    //         }
-    //     })
-    // }
-
     // fetch photos from flickr; function to run in onSubmit
     const fetchPhotos = async () => {
 
@@ -177,9 +169,6 @@ function FormContainer() {
                         thisSession: prevState.thisSession + data.photos.photo.length
                     }
                 })
-
-                // setApiCallsThisSession(prevState => prevState + data.photos.photo.length)
-                // setApiCallsThisHour(prevState => prevState + data.photos.photo.length)
 
                 return Promise.all(data.photos.photo.map(photo => hasMinDPI(photo, input.dpi)))
                     .then(result => result.filter(element => element)) // filter out undefined elements in return array
