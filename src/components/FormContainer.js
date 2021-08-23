@@ -60,17 +60,15 @@ function FormContainer() {
                     if (element.dateTime >= millisecondsLastHour) {
                         callsThisHour += element.calls
                     } else {
-                        // set calls this hour and jump out of the loop
-                        // all further entries will be too far in the past to be relevant
-                        setApiCalls(prevState => {
-                            return {
-                                ...prevState,
-                                thisHour: callsThisHour
-                            }
-                        })
                         break
                     }
                 }
+                setApiCalls(prevState => {
+                    return {
+                        ...prevState,
+                        thisHour: callsThisHour
+                    }
+                })
             })
             .catch(err => console.log("Error: ", err))
 
