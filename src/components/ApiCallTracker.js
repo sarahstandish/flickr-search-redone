@@ -3,8 +3,6 @@ import React from 'react'
 
 function ApiCallTracker( props ) {
 
-    console.log("test change 2")
-
     let percentage = (props.props.thisHour / 3600 * 100).toFixed(0)
 
     let warning;
