@@ -19,7 +19,6 @@ function ApiCallTracker( props ) {
 
     return(
             <div className="error">
-                <p>API calls this hour: {props.props.thisHour}</p>
                 <p>{warning}</p>
             </div>
 
