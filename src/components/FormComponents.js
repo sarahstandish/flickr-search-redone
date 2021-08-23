@@ -1,6 +1,9 @@
 import React from 'react'
 
 function FormComponents( props ) {
+
+    // hide dpi search component if calls per hour have exceeded 3600 (maximum set by Flickr)
+    let dpiVisibility = props.callsThisHour > 3600 ? "dpiSearchInvisible" : "dpiSearchVisible"
     
     return(
         
@@ -150,13 +153,15 @@ function FormComponents( props ) {
             </label>
 
             </div>
-            <label>Minimum DPI</label>
-                <input 
-                    type="number" 
-                    name="dpi" 
-                    value={props.dpi} 
-                    onChange={props.handleChange}
-                />
+            <div className = {dpiVisibility}>
+                <label>Minimum DPI</label>
+                    <input 
+                        type="number" 
+                        name="dpi" 
+                        value={props.dpi} 
+                        onChange={props.handleChange}
+                    />
+            </div>
             <button>Submit</button>
         </form>
     )

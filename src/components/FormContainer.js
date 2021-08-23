@@ -53,15 +53,12 @@ function FormContainer() {
         api.getCalls()
             .then(object => {
 
-                console.log("Got calls")
-
                 // take only the last 100 calls since each entry must be at least 1% of the total capacity
                 let lastHundred = object.data.data.slice(-100).reverse()
                 
                 for (const element of lastHundred) {
                     if (element.dateTime >= millisecondsLastHour) {
                         callsThisHour += element.calls
-                        console.log("Calls so far: ", callsThisHour)
                     } else {
                         // set calls this hour and jump out of the loop
                         // all further entries will be too far in the past to be relevant
@@ -71,7 +68,6 @@ function FormContainer() {
                                 thisHour: callsThisHour
                             }
                         })
-                        console.log("Calls this hour: ", apiCalls.thisHour)
                         break
                     }
                 }
@@ -83,12 +79,9 @@ function FormContainer() {
         // write the apiCalls to the database
     useEffect(() => { 
 
-        console.log("This session total changing")
-
         // only run if calls are greater than or 1% of limit
         if (apiCalls.thisSession > 36) {
             api.newCall({ "calls" : apiCalls.thisSession })
-            .then(console.log(`${apiCalls.thisSession} calls inserted successfully`))
             .then(setApiCalls(prevState => {
                 return {
                     ...prevState,
@@ -172,7 +165,7 @@ function FormContainer() {
 
                 return Promise.all(data.photos.photo.map(photo => hasMinDPI(photo, input.dpi)))
                     .then(result => result.filter(element => element)) // filter out undefined elements in return array
-                    .catch(error => console.log("Error is: ", error))
+                    .catch(error => console.log(error))
 
                 } else {
                     return data.photos.photo
@@ -209,14 +202,15 @@ function FormContainer() {
             < FormComponents
                 handleChange = {handleChange}
                 props = {input}
+                callsThisHour = {apiCalls.thisHour}
             />
             { apiCalls.thisHour > 0 ? 
                 < ApiCallTracker props = {apiCalls} />
                 : null
             }
             
-            <p>{errorMessages.locationError}</p>
-            <p>{errorMessages.searchError}</p>
+            <p className = "error">{errorMessages.locationError}</p>
+            <p className = "error">{errorMessages.searchError}</p>
             <div className="photos">
                 {photosArray}
             </div>

@@ -139,6 +139,9 @@ textarea {
   font-weight: bold;
   text-align: center;
   margin-bottom: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+  white-space: pre-wrap;
 }
 
 .container {
@@ -181,6 +184,10 @@ textarea {
 
 .container input:checked ~ .checkmark {
   background-color: var(--accent-color-1);
+}
+
+.dpiSearchInvisible {
+  display: none
 }
 
 
