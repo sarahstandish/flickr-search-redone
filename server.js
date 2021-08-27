@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 app.use('/api', callRouter)
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(client/build))
+    app.use(express.static('client/build'))
 }
 
 app.listen(PORT, () => console.log(`Server running in port ${PORT}`));
