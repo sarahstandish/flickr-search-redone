@@ -1,7 +1,15 @@
 import axios from 'axios'
 
+let url;
+
+if (process.env.NODE_ENV === 'production') {
+    url = 'index.html'
+} else {
+    url = 'http://localhost:8000/api'
+}
+
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api'
+    baseURL: url
 })
 
 export const newCall = info => api.post('/searchCalls', info)

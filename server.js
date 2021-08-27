@@ -3,9 +3,9 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const apiPort = 8000;
-const db = require('./db/index')
-const callRouter = require('./routes/api-router')
+const PORT = process.env.PORT || 8000;
+const db = require('./client/src/server/db/index')
+const callRouter = require('./client/src/server/routes/api-router')
 
 app.use(express.urlencoded({extended:false})); // parse url-encoded strings
 app.use(express.json())
@@ -23,4 +23,8 @@ app.get('/', (req, res) => {
 
 app.use('/api', callRouter)
 
-app.listen(apiPort, () => console.log(`Server running in port ${apiPort}`));
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(client/build))
+}
+
+app.listen(PORT, () => console.log(`Server running in port ${PORT}`));

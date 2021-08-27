@@ -3,7 +3,7 @@ import FormComponents from './FormComponents';
 import { hasMinDPI, getLatAndLang, createUrl} from './flickrSearchHelperFunctions'
 import Photo from './Photo'
 import ApiCallTracker from './ApiCallTracker';
-import api from '../api'
+import api from '../server/api'
 
 
 function FormContainer() {
