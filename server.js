@@ -12,11 +12,6 @@ app.use(express.urlencoded({extended:false})); // parse url-encoded strings
 app.use(express.json())
 app.use('/api', cors())
 
-app.use(express.static(path.join(__dirname, 'client/build')))
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build'))
-})
-
 // .on is the event listener used for databases, 'open' is the event
 db.on('open', () => {
         console.log('Mongoose connection open');
@@ -30,3 +25,11 @@ app.get('/', (req, res) => {
 app.use('/api', callRouter)
 
 app.listen(PORT, () => console.log(`Server running in port ${PORT}`));
+
+// if app is on Heroku
+if (process.env.NODE_ENV == 'production') {
+    app.use(express.static(path.join(__dirname, 'client/build')))
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'client/build'))
+    })
+}
