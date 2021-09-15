@@ -2,10 +2,12 @@ import axios from 'axios'
 
 let url;
 
+const PORT = process.env.PORT || 8000;
+
 if (process.env.NODE_ENV === 'production') {
     url = 'https://flickr-search-with-dpi.herokuapp.com'
 } else {
-    url = 'http://localhost:8000'
+    url =  `http://localhost:${PORT}`
 }
 
 const api = axios.create({

@@ -2,7 +2,8 @@ const connectionsString = require('../lib/credentials')
 const mongoose = require('mongoose');
 
 mongoose
-    .connect(process.env.MONGODB_URI || connectionsString, {
+    // .connect(process.env.MONGODB_URI || connectionsString, {
+    .connect(connectionsString, {
         dbName: 'myFirstDatabase',
         useNewUrlParser: true,
         useUnifiedTopology: true

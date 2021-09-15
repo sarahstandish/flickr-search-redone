@@ -2,6 +2,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const path = require('path')
 const app = express();
 const PORT = process.env.PORT || 8000;
 const db = require('./client/src/server/db/index')
@@ -10,6 +11,11 @@ const callRouter = require('./client/src/server/routes/api-router')
 app.use(express.urlencoded({extended:false})); // parse url-encoded strings
 app.use(express.json())
 app.use('/api', cors())
+
+app.use(express.static(path.join(__dirname, 'client/build')))
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/build'))
+})
 
 // .on is the event listener used for databases, 'open' is the event
 db.on('open', () => {
@@ -22,9 +28,5 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api', callRouter)
-
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('client/build'))
-}
 
 app.listen(PORT, () => console.log(`Server running in port ${PORT}`));
