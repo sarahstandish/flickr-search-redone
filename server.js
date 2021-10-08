@@ -20,10 +20,6 @@ db.on('open', () => {
 
 app.use('/api', callRouter)
 
-app.get('/', (req, res) => {
-    res.send(`Hello world! Node environment is ${process.env.NODE_ENV}`)
-})
-
 app.listen(PORT, () => console.log(`Server running in port ${PORT}`));
 
 // if app is on Heroku
@@ -32,5 +28,9 @@ if (process.env.NODE_ENV == 'production') {
     app.get('*', (req, res) => { 
         // res.sendFile(path.join(__dirname, 'client/build'))
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')) // copied code from https://github.com/davidreke/mernShoppingList/blob/main/server.js
+    })
+} else {
+    app.get('/', (req, res) => {
+        res.send(`Hello world! Node environment is ${process.env.NODE_ENV}`)
     })
 }
