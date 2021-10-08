@@ -22,6 +22,8 @@ old_files
 keys.js
 credentials.js
 troubleshooting.md
+.env.development
+.env
 
 npm-debug.log*
 yarn-debug.log*
