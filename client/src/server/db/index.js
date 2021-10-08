@@ -1,5 +1,9 @@
-const connectionsString = require('../lib/credentials')
+require('dotenv').config()
+
 const mongoose = require('mongoose');
+
+const connectionsString = process.env.REACT_APP_MONGO_CONNECTIONS_STRING
+console.log("Connections string is: ", connectionsString)
 
 mongoose
     // .connect(process.env.MONGODB_URI || connectionsString, {
