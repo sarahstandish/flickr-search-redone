@@ -30,6 +30,7 @@ app.listen(PORT, () => console.log(`Server running in port ${PORT}`));
 if (process.env.NODE_ENV == 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')))
     app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'client/build'))
+        // res.sendFile(path.join(__dirname, 'client/build'))
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')) // copied code from https://github.com/davidreke/mernShoppingList/blob/main/server.js
     })
 }
