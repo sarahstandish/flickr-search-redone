@@ -18,18 +18,18 @@ db.on('open', () => {
     })
     .on('error', console.error.bind(console, 'MongoDB connection error'))
 
-app.get('/', (req, res) => {
-    res.send('Hello world!')
-})
-
 app.use('/api', callRouter)
+
+app.get('/', (req, res) => {
+    res.send(`Hello world! Node environment is ${process.env.NODE_ENV}`)
+})
 
 app.listen(PORT, () => console.log(`Server running in port ${PORT}`));
 
 // if app is on Heroku
 if (process.env.NODE_ENV == 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')))
-    app.get('*', (req, res) => {
+    app.get('*', (req, res) => { 
         // res.sendFile(path.join(__dirname, 'client/build'))
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')) // copied code from https://github.com/davidreke/mernShoppingList/blob/main/server.js
     })
