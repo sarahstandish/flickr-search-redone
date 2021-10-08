@@ -1,10 +1,12 @@
-import {googleApiKey, flickrApiKey} from './keys'
+// import {googleApiKey, flickrApiKey} from './keys'
+
+require('dotenv').config()
 
 async function createUrl(props, latitude, longitude) {
 
     let licenses = licensesToString(props.licenses);
 
-    return `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${flickrApiKey}&text=${props.search_term}&content_type=1&per_page=250&format=json&nojsoncallback=1&sort=relevance&radius=32&lat=${latitude}&lon=${longitude}&license=${licenses}`
+    return `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${process.env.REACT_APP_FLICKR_KEY}&text=${props.search_term}&content_type=1&per_page=250&format=json&nojsoncallback=1&sort=relevance&radius=32&lat=${latitude}&lon=${longitude}&license=${licenses}`
 }
 
 function licensesToString(licenseObject) {
@@ -20,7 +22,7 @@ async function getLatAndLang(location) {
     if (!location) {
         return ['%00', '%00']
     } else {
-        let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${googleApiKey}`
+        let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${process.env.REACT_APP_GOOGLE_KEY}`
         
         return fetch(url)
             .then(response => response.json())
@@ -33,7 +35,7 @@ async function getLatAndLang(location) {
 
 async function hasMinDPI(photo, dpi) {
 
-    let url = `https://www.flickr.com/services/rest/?method=flickr.photos.getExif&api_key=${flickrApiKey}&photo_id=${photo.id}&secret=${photo.secret}&format=json&nojsoncallback=1`;
+    let url = `https://www.flickr.com/services/rest/?method=flickr.photos.getExif&api_key=${process.env.REACT_APP_FLICKR_KEY}&photo_id=${photo.id}&secret=${photo.secret}&format=json&nojsoncallback=1`;
     
     return fetch(url)
         .then(response => response.json())
