@@ -1,4 +1,3 @@
-// import {googleApiKey, flickrApiKey} from './keys'
 
 require('dotenv').config()
 
