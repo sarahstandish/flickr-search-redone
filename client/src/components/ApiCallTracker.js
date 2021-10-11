@@ -7,7 +7,9 @@ function ApiCallTracker( props ) {
 
     let warning;
 
-    if (percentage < 50) {
+    if (percentage < 5) {
+        warning = ''
+    } else if (percentage < 50) {
         warning = `API calls this hour are at ${percentage}% of the hourly limit.`
     } else if (percentage < 80) {
         warning = `API calls this hour are at ${percentage}% of the hourly limit.\nTip: searching with DPI performs many more API calls, so search without it unless needed.`
